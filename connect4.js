@@ -11,22 +11,24 @@ const WIDTH = 7;
 const HEIGHT = 6;
 
 let currPlayer = 1; // active player: 1 or 2
-const BOARD = []; // array of rows, each row is array of cells  (board[y][x])
+const board = []; // array of rows, each row is array of cells  (board[y][x])
 
 /** makeBoard: create in-JS board structure:
  * Takes in the global constants of WIDTH and HEIGHT
  *    board = array of rows, each row is array of cells  (board[y][x])
  */
 function makeBoard(width = WIDTH, height = HEIGHT) {
-  let widthBoard = [];
+  
+  for (let i = 0; i < height; i++) {
+    let col = [];
+    
+    for (let j = 0; j < width; j++) {
+        col.push(null);
+      }
 
-  for (let i = 0; i < width; i++) {
-    widthBoard.push(null);
+    board.push(col);
   }
 
-  for (let x = 0; x < height; x++) {
-    BOARD.push(widthBoard);
-  }
 }
 
 /** makeHtmlBoard: make HTML table and row of column tops.
@@ -48,7 +50,7 @@ function makeHtmlBoard() {
   // TODO: add comment for this code
   for (let x = 0; x < WIDTH; x++) {
     const headCell = document.createElement('td');
-    headCell.setAttribute('id', `top-${x}`);
+    headCell.setAttribute('id', `${x}`);
     top.append(headCell);
   }
   htmlBoard.append(top);
@@ -58,7 +60,7 @@ function makeHtmlBoard() {
 
     for (let x = 0; x < WIDTH; x++) {
       const cell = document.createElement('td');
-      cell.setAttribute('id', 'c-y-x');
+      cell.setAttribute('id', `c-${y}-${x}`);
       row.appendChild(cell);
     }
     htmlBoard.appendChild(row);
@@ -76,6 +78,13 @@ function findSpotForCol(x) {
 
 function placeInTable(y, x) {
   // TODO: make a div and insert into correct table cell
+  const div = document.createElement('div');
+  div.classList.add('piece', `${currPlayer}`);
+
+  for (let i = height; i > height; i--) {
+    if ()
+  }
+  
 }
 
 /** endGame: announce game end */
@@ -89,6 +98,7 @@ function endGame(msg) {
 function handleClick(evt) {
   // get x from ID of clicked cell
   var x = +evt.target.id;
+  console.log(x);
 
   // get next spot in column (if none, ignore click)
   var y = findSpotForCol(x);
