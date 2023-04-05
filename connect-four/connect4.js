@@ -7,18 +7,31 @@
  * board fills (tie)
  */
 
-var WIDTH = 7;
-var HEIGHT = 6;
+const WIDTH = 7;
+const HEIGHT = 6;
 
-var currPlayer = 1; // active player: 1 or 2
-var board = []; // array of rows, each row is array of cells  (board[y][x])
+let currPlayer = 1; // active player: 1 or 2
+const BOARD = []; // array of rows, each row is array of cells  (board[y][x])
 
 /** makeBoard: create in-JS board structure:
  *    board = array of rows, each row is array of cells  (board[y][x])
  */
 
-function makeBoard() {
+function makeBoard(width = WIDTH, height = HEIGHT) {
   // TODO: set "board" to empty HEIGHT x WIDTH matrix array
+  // width = 7
+  // [null, null, null, null, null, null, null]
+  // height = 6
+  let widthBoard = [];
+
+  for (let i = 0; i < width; i++) {
+    widthBoard.push(null);
+  };
+
+  for (let x = 0; x < height; x++) {
+    BOARD.push(widthBoard)
+  };
+
 }
 
 /** makeHtmlBoard: make HTML table and row of column tops. */
