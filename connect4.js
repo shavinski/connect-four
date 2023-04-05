@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 /** Connect Four
  *
@@ -14,61 +14,54 @@ let currPlayer = 1; // active player: 1 or 2
 const BOARD = []; // array of rows, each row is array of cells  (board[y][x])
 
 /** makeBoard: create in-JS board structure:
+ * Takes in the global constants of WIDTH and HEIGHT
  *    board = array of rows, each row is array of cells  (board[y][x])
  */
-
 function makeBoard(width = WIDTH, height = HEIGHT) {
-  // TODO: set "board" to empty HEIGHT x WIDTH matrix array
-  // width = 7
-  // [null, null, null, null, null, null, null]
-  // height = 6
   let widthBoard = [];
 
   for (let i = 0; i < width; i++) {
     widthBoard.push(null);
-  };
+  }
 
   for (let x = 0; x < height; x++) {
-    BOARD.push(widthBoard)
-  };
-
+    BOARD.push(widthBoard);
+  }
 }
 
-/** makeHtmlBoard: make HTML table and row of column tops. */
+/** makeHtmlBoard: make HTML table and row of column tops.
+ * Takes in HEIGHT and WIDTH constants
+ * Create rows and cells and append them to HTML */
+
+//TODO: Decompose function
 
 function makeHtmlBoard() {
-  var htmlBoard = document.getElementById('board');
+  const htmlBoard = document.getElementById('board');
+
+  //TODO:
+  /** creates top row of HTML board with global HEIGHT and WIDTH vars*/
+
+  const top = document.createElement('tr');
+  top.setAttribute('id', 'column-top');
+  top.addEventListener('click', handleClick);
 
   // TODO: add comment for this code
-  var top = document.createElement("tr");
-  top.setAttribute("id", "column-top");
-  top.addEventListener("click", handleClick);
-
-  // TODO: add comment for this code
-  for (var x = 0; x < WIDTH; x++) {
-    var headCell = document.createElement("td");
-    headCell.setAttribute("id", `top-${x}`);
+  for (let x = 0; x < WIDTH; x++) {
+    const headCell = document.createElement('td');
+    headCell.setAttribute('id', `top-${x}`);
     top.append(headCell);
   }
   htmlBoard.append(top);
 
-  // dynamically creates the main part of html board
-  // uses HEIGHT to create table rows
-  // uses WIDTH to create table cells for each row
-  for (var y = 0; y < HEIGHT; y++) {
-    // TODO: Create a table row element and assign to a "row" variable
+  for (let y = 0; y < HEIGHT; y++) {
+    const row = document.createElement('tr');
 
-    for (var x = 0; x < WIDTH; x++) {
-      // TODO: Create a table cell element and assign to a "cell" variable
-
-      // TODO: add an id, c-y-x, to the above table cell element
-      // you'll use this later, so make sure you use c-y-x
-
-      // TODO: append the table cell to the table row
-
+    for (let x = 0; x < WIDTH; x++) {
+      const cell = document.createElement('td');
+      cell.setAttribute('id', 'c-y-x');
+      row.appendChild(cell);
     }
-    // TODO: append the row to the html board
-
+    htmlBoard.appendChild(row);
   }
 }
 
@@ -122,17 +115,14 @@ function handleClick(evt) {
 /** checkForWin: check board cell-by-cell for "does a win start here?" */
 
 function checkForWin() {
-
   /** _win:
    * takes input array of 4 cell coordinates [ [y, x], [y, x], [y, x], [y, x] ]
    * returns true if all are legal coordinates for a cell & all cells match
    * currPlayer
    */
   function _win(cells) {
-
     // TODO: Check four cells to see if they're all legal & all color of current
     // player
-
   }
 
   // using HEIGHT and WIDTH, generate "check list" of coordinates
@@ -145,7 +135,12 @@ function checkForWin() {
       // each should be an array of 4 cell coordinates:
       // [ [y, x], [y, x], [y, x], [y, x] ]
 
-      let horiz = [[y, x], [y, x + 1], [y, x + 2], [y, x + 3]];
+      let horiz = [
+        [y, x],
+        [y, x + 1],
+        [y, x + 2],
+        [y, x + 3],
+      ];
       let vert;
       let diagDL;
       let diagDR;
