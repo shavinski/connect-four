@@ -69,10 +69,11 @@ function makeHtmlBoard() {
 
 function findSpotForCol(x) {
   for (let i = HEIGHT - 1; i >= 0; i--) {
-    if (board[x][i] === null) {
+    if (board[i][x] === null) {
       return i;
     }
   }
+  return null;
 }
 
 /** placeInTable: update DOM to place piece into HTML table of board */
@@ -96,16 +97,17 @@ function endGame(msg) {
 
 function handleClick(evt) {
   // get x from ID of clicked cell
-  var x = Number(evt.target.id.slice('top-'.length));
+  const x = Number(evt.target.id.slice('top-'.length));
 
   // get next spot in column (if none, ignore click)
-  var y = findSpotForCol(x);
+  let y = findSpotForCol(x);
   if (y === null) {
     return;
   }
 
   // place piece in board and add to HTML table
   // TODO: add line to update in-memory board
+  board[y][x] = currPlayer;
   placeInTable(y, x);
 
   // check for win
@@ -115,6 +117,11 @@ function handleClick(evt) {
 
   // check for tie
   // TODO: check if all cells in board are filled; if so call, call endGame
+  board.every(piece => function(){
+    if (piece !== null) {
+      endGame();
+    }
+  });
 
   // switch players
   currPlayer === 1 ? (currPlayer = 2) : (currPlayer = 1);
@@ -136,8 +143,8 @@ function checkForWin() {
   // using HEIGHT and WIDTH, generate "check list" of coordinates
   // for 4 cells (starting here) for each of the different
   // ways to win: horizontal, vertical, diagonalDR, diagonalDL
-  for (var y = 0; y < HEIGHT; y++) {
-    for (var x = 0; x < WIDTH; x++) {
+  for (let y = 0; y < HEIGHT; y++) {
+    for (let x = 0; x < WIDTH; x++) {
       // TODO: assign values to the below variables for each of the ways to win
       // horizontal has been assigned for you
       // each should be an array of 4 cell coordinates:
@@ -149,9 +156,27 @@ function checkForWin() {
         [y, x + 2],
         [y, x + 3],
       ];
-      let vert;
-      let diagDL;
-      let diagDR;
+
+      let vert = [
+        [y, x]
+        [y + 1, x],
+        [y + 2, x],
+        [y + 3, x]
+      ];
+
+      let diagDL = [
+        [y, x]
+        [y + 1, x - 1],
+        [y + 2, x - 2],
+        [y + 3, x - 3],
+      ];
+
+      let diagDR = [
+        [y, x],
+        [y + 1, x + 1],
+        [y + 2, x + 2],
+        [y + 3, x + 3],
+      ];
 
       // find winner (only checking each win-possibility as needed)
       if (_win(horiz) || _win(vert) || _win(diagDR) || _win(diagDL)) {
