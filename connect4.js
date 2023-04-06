@@ -11,7 +11,7 @@ const WIDTH = 7;
 const HEIGHT = 6;
 
 let currPlayer = 1; // active player: 1 or 2
-const board = []; // array of rows, each row is array of cells  (board[y][x])
+let board = []; // array of rows, each row is array of cells  (board[y][x])
 
 /** makeBoard: create in-JS board structure:
  * Takes in the global constants of WIDTH and HEIGHT
@@ -40,7 +40,6 @@ function makeHtmlBoard() {
 
   //TODO:
   /** creates top row of HTML board with global HEIGHT and WIDTH vars*/
-
   const top = document.createElement('tr');
   top.setAttribute('id', 'column-top');
   top.addEventListener('click', handleClick);
@@ -82,8 +81,8 @@ function placeInTable(y, x) {
   // TODO: make a div and insert into correct table cell
   const div = document.createElement('div');
   div.classList.add('piece', `p${currPlayer}`);
+
   const moveDiv = document.getElementById(`c-${y}-${x}`);
-  console.log('this is x:', x, 'this is y:', y);
   moveDiv.appendChild(div);
 }
 
@@ -91,6 +90,7 @@ function placeInTable(y, x) {
 
 function endGame(msg) {
   // TODO: pop up alert message
+  alert(msg);
 }
 
 /** handleClick: handle click of column top to play piece */
@@ -123,8 +123,9 @@ function handleClick(evt) {
     }
   });
 
+
   // switch players
-  currPlayer === 1 ? (currPlayer = 2) : (currPlayer = 1);
+  currPlayer = currPlayer === 1 ? 2 : 1;
 }
 
 /** checkForWin: check board cell-by-cell for "does a win start here?" */
@@ -138,6 +139,16 @@ function checkForWin() {
   function _win(cells) {
     // TODO: Check four cells to see if they're all legal & all color of current
     // player
+  
+    return cells.every(
+      ([y, x]) =>
+        y >= 0 &&
+        y < HEIGHT &&
+        x >= 0 &&
+        x < WIDTH &&
+        board[y][x] === currPlayer
+    );
+
   }
 
   // using HEIGHT and WIDTH, generate "check list" of coordinates
@@ -150,33 +161,34 @@ function checkForWin() {
       // each should be an array of 4 cell coordinates:
       // [ [y, x], [y, x], [y, x], [y, x] ]
 
+
+      // WE WERE MISSING COMMAS HERE THAT MESSES WITH _win
       let horiz = [
-        [y, x],
-        [y, x + 1],
-        [y, x + 2],
-        [y, x + 3],
+        [y, x], 
+        [y, x + 1], 
+        [y, x + 2], 
+        [y, x + 3]
       ];
 
       let vert = [
-        [y, x]
+        [y, x], 
         [y + 1, x],
         [y + 2, x],
         [y + 3, x]
       ];
 
       let diagDL = [
-        [y, x]
+        [y, x],
         [y + 1, x - 1],
         [y + 2, x - 2],
-        [y + 3, x - 3],
+        [y + 3, x - 3]
       ];
 
       let diagDR = [
-        [y, x],
-        [y + 1, x + 1],
-        [y + 2, x + 2],
-        [y + 3, x + 3],
-      ];
+        [y, x], 
+        [y + 1, x + 1], 
+        [y + 2, x + 2], 
+        [y + 3, x + 3]];
 
       // find winner (only checking each win-possibility as needed)
       if (_win(horiz) || _win(vert) || _win(diagDR) || _win(diagDL)) {
