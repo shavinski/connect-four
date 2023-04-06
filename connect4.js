@@ -18,17 +18,15 @@ const board = []; // array of rows, each row is array of cells  (board[y][x])
  *    board = array of rows, each row is array of cells  (board[y][x])
  */
 function makeBoard(width = WIDTH, height = HEIGHT) {
-  
   for (let i = 0; i < height; i++) {
     let col = [];
-    
+
     for (let j = 0; j < width; j++) {
-        col.push(null);
-      }
+      col.push(null);
+    }
 
     board.push(col);
   }
-
 }
 
 /** makeHtmlBoard: make HTML table and row of column tops.
@@ -50,7 +48,7 @@ function makeHtmlBoard() {
   // TODO: add comment for this code
   for (let x = 0; x < WIDTH; x++) {
     const headCell = document.createElement('td');
-    headCell.setAttribute('id', `${x}`);
+    headCell.setAttribute('id', `top-${x}`);
     top.append(headCell);
   }
   htmlBoard.append(top);
@@ -70,8 +68,11 @@ function makeHtmlBoard() {
 /** findSpotForCol: given column x, return bottom empty y (null if filled) */
 
 function findSpotForCol(x) {
-  // TODO: write the real version of this, rather than always returning 5
-  return 5;
+  for (let i = HEIGHT - 1; i >= 0; i--) {
+    if (board[x][i] === null) {
+      return i;
+    }
+  }
 }
 
 /** placeInTable: update DOM to place piece into HTML table of board */
@@ -79,12 +80,10 @@ function findSpotForCol(x) {
 function placeInTable(y, x) {
   // TODO: make a div and insert into correct table cell
   const div = document.createElement('div');
-  div.classList.add('piece', `${currPlayer}`);
-
-  for (let i = height; i > height; i--) {
-    if ()
-  }
-  
+  div.classList.add('piece', `p${currPlayer}`);
+  const moveDiv = document.getElementById(`c-${y}-${x}`);
+  console.log('this is x:', x, 'this is y:', y);
+  moveDiv.appendChild(div);
 }
 
 /** endGame: announce game end */
@@ -97,8 +96,7 @@ function endGame(msg) {
 
 function handleClick(evt) {
   // get x from ID of clicked cell
-  var x = +evt.target.id;
-  console.log(x);
+  var x = Number(evt.target.id.slice('top-'.length));
 
   // get next spot in column (if none, ignore click)
   var y = findSpotForCol(x);
@@ -119,7 +117,7 @@ function handleClick(evt) {
   // TODO: check if all cells in board are filled; if so call, call endGame
 
   // switch players
-  // TODO: switch currPlayer 1 <-> 2
+  currPlayer === 1 ? (currPlayer = 2) : (currPlayer = 1);
 }
 
 /** checkForWin: check board cell-by-cell for "does a win start here?" */
